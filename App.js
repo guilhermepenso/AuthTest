@@ -62,11 +62,15 @@ export default function App() {
     }
   };
   return (
-    <View style={styles.container}>
-      <Text style={styles.textCustom}>Update Local Database</Text>
-      <Button title="Update Local" onPress={handleScanProducts} />
-      <Text style={styles.textCustom}>Scan Table</Text>
-      <Button title="Scan Products" onPress={scanTable} />
+    <View style={styles.page}>
+      <View style={styles.container}>
+        <Text style={styles.textCustom}>Update Table</Text>
+        <Button title="Update Products" onPress={handleScanProducts} />
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.textCustom}>Scan Table</Text>
+        <Button title="Scan Products" onPress={scanTable} />
+      </View>
       {showScanTable && (
         <DataTable style={styles.table}>
           <DataTable.Header style={styles.tableHeader}>
@@ -107,14 +111,16 @@ export default function App() {
           ))}
         </DataTable>
       )}
-      <Text style={styles.textCustom}>Get Table</Text>
-      <TextInput
-        placeholder="enter Product ID"
-        onChangeText={(text) => setProductIdInput(text)}
-        value={productIdInput}
-        style={styles.input}
-      />
-      <Button title="Get Product" onPress={handleGetProduct} />
+      <View style={styles.container}>
+        <Text style={styles.textCustom}>Get Table</Text>
+        <TextInput
+          placeholder="enter Product ID"
+          onChangeText={(text) => setProductIdInput(text)}
+          value={productIdInput}
+          style={styles.input}
+        />
+        <Button title="Get Product" onPress={handleGetProduct} />
+      </View>
       {showGetTable &&(
         <DataTable style={styles.table}>
         <DataTable.Header style={styles.tableHeader}>
@@ -157,11 +163,16 @@ export default function App() {
   );
 }
 const styles = StyleSheet.create({
-  container: {
+  page: {
     flex: 1,
     backgroundColor: '#161010',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  container: {
+    backgroundColor: '#161010',
+    margin: 15,
+    alignItems: 'center',
   },
   textCustom: {
     color: '#fff',
