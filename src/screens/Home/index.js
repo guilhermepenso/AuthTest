@@ -4,7 +4,7 @@ import { DataTable } from 'react-native-paper';
 import { scanProducts } from './src/api/scan'; // Import the ScanProducts function
 import * as SecureStore from 'expo-secure-store';
 
-export default function App() {
+export const Home = () => {
   // SCAN - PRODUCTS
   const [products, setProducts] = useState(null);
   const [showScanTable, setShowScanTable] = useState(false);

@@ -1,14 +1,18 @@
 import axios from 'axios';
-import { API_ENDPOINT } from '@env';
+import { API_ENDPOINT, ACCESS_TOKEN } from '@env';
 
-const API_URL = API_ENDPOINT; // Replace with your actual endpoint
+const apiEndpoint = API_ENDPOINT;
+const accessToken = ACCESS_TOKEN;
 
 export const scanProducts = async () => {
     try {
-        const response = await axios.get(`${API_URL}/products`);
+        const response = await axios.get(`${apiEndpoint}/products`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
         console.log('Products:', response.data.products);
         return response.data.products
-        // Handle the retrieved products (e.g., update state)
     } catch (error) {
         console.error('Error fetching products:', error);
     }
