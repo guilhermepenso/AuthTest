@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
+import { Button, StyleSheet, Text, View, TextInput, ScrollView, SafeAreaView } from 'react-native';
 import { DataTable } from 'react-native-paper';
-import { scanProducts } from './src/api/scan'; // Import the ScanProducts function
+import { scanProducts } from '../../api/scan'; // Import the ScanProducts function
 import * as SecureStore from 'expo-secure-store';
+import { useNavigation } from '@react-navigation/native'
 
 export const Home = () => {
+  const navigation = useNavigation();
+
   // SCAN - PRODUCTS
   const [products, setProducts] = useState(null);
   const [showScanTable, setShowScanTable] = useState(false);
@@ -24,7 +27,7 @@ export const Home = () => {
         await handleScanProducts();
       }
     } catch (error) {
-      console.error('Erro ao verificar o SecureStore:', error);
+      alert('Erro ao verificar o SecureStore:', error);
     }
   };
 
@@ -40,7 +43,7 @@ export const Home = () => {
         await SecureStore.setItemAsync('products', JSON.stringify(data));
       } 
     } catch (error) {
-      console.error('Não foi possível se conectar a API:', error);
+      alert('Não foi possível se conectar a API:', error);
     }
   };
   // GET - PRODUCT
@@ -56,28 +59,90 @@ export const Home = () => {
       setProduct(productData);
       setShowGetTable(true);
     } catch (error) {
-      console.error('Não foi possível obter os dados da tabela:', error);
+      alert('Não foi possível obter os dados da tabela:', error);
     }
   };
   return (
-    <View style={styles.page}>
-      <View style={styles.container}>
-        <Text style={styles.textCustom}>Update Table</Text>
-        <Button title="Update Products" onPress={handleScanProducts} />
+    <SafeAreaView style={styles.page}>
+      <View style={styles.navRow}>
+          <View>
+            <Text style={styles.titleText}>HOME PAGE</Text>
+          </View>
+          <View style={styles.buttonHeader}>
+            <Button title="LogOut" onPress={() => navigation.navigate('Login')}/>
+          </View>
       </View>
-      <View style={styles.container}>
-        <Text style={styles.textCustom}>Scan Table</Text>
-        <Button title="Scan Products" onPress={scanTable} />
-      </View>
-      {showScanTable && (
-        <DataTable style={styles.table}>
+      <ScrollView>
+        <View style={styles.container}>
+        </View>
+        <View style={styles.container}>
+          <Button title="Sync" onPress={handleScanProducts} />
+        </View>
+        <View style={styles.container}>
+          <Button title="Scan" onPress={scanTable} />
+        </View>
+        {showScanTable && (
+          <DataTable style={styles.table}>
+            <DataTable.Header style={styles.tableHeader}>
+              <DataTable.Title>
+                <Text style={styles.textCustom}>Product ID</Text>
+              </DataTable.Title>
+              <DataTable.Title>
+                <Text style={styles.textCustom}>Inventory</Text>
+              </DataTable.Title>
+              <DataTable.Title>
+                <Text style={styles.textCustom}>Name</Text>
+              </DataTable.Title>
+              <DataTable.Title>
+                <Text style={styles.textCustom}>Price</Text>
+              </DataTable.Title>
+              <DataTable.Title>
+                <Text style={styles.textCustom}>Color</Text>
+              </DataTable.Title>
+            </DataTable.Header>
+            {products.map((product, index) => (
+              <DataTable.Row key={index}>
+                <DataTable.Cell>
+                  <Text style={styles.textCustom}>{product.productId}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Text style={styles.textCustom}>{product.inventory}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Text style={styles.textCustom}>{product.productName}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Text style={styles.textCustom}>{product.price}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Text style={styles.textCustom}>{product.color}</Text>
+                </DataTable.Cell>
+              </DataTable.Row>
+            ))}
+          </DataTable>
+        )}
+        <View style={styles.containerRow}>
+          <View style={styles.container}>
+            <TextInput
+              placeholder="enter Product ID"
+              onChangeText={(text) => setProductIdInput(text)}
+              value={productIdInput}
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.container}>
+            <Button title="Get" onPress={handleGetProduct} />
+          </View>
+        </View>
+        {showGetTable &&(
+          <DataTable style={styles.table}>
           <DataTable.Header style={styles.tableHeader}>
             <DataTable.Title>
-              <Text style={styles.textCustom}>Product ID</Text>
+              <Text style={styles.textCustom}>Product ID</Text> 
             </DataTable.Title>
             <DataTable.Title>
               <Text style={styles.textCustom}>Inventory</Text>
-            </DataTable.Title>
+            </DataTable.Title>  
             <DataTable.Title>
               <Text style={styles.textCustom}>Name</Text>
             </DataTable.Title>
@@ -88,96 +153,65 @@ export const Home = () => {
               <Text style={styles.textCustom}>Color</Text>
             </DataTable.Title>
           </DataTable.Header>
-          {products.map((product, index) => (
-            <DataTable.Row key={index}>
-              <DataTable.Cell>
-                <Text style={styles.textCustom}>{product.productId}</Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <Text style={styles.textCustom}>{product.inventory}</Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <Text style={styles.textCustom}>{product.productName}</Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <Text style={styles.textCustom}>{product.price}</Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <Text style={styles.textCustom}>{product.color}</Text>
-              </DataTable.Cell>
-            </DataTable.Row>
-          ))}
+          <DataTable.Row>
+            <DataTable.Cell>
+              <Text style={styles.textCustom}>{product.productId}</Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.textCustom}>{product.inventory}</Text> 
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.textCustom}>{product.productName}</Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.textCustom}>{product.price}</Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.textCustom}>{product.color}</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
         </DataTable>
       )}
-      <View style={styles.container}>
-        <Text style={styles.textCustom}>Get Table</Text>
-        <TextInput
-          placeholder="enter Product ID"
-          onChangeText={(text) => setProductIdInput(text)}
-          value={productIdInput}
-          style={styles.input}
-        />
-        <Button title="Get Product" onPress={handleGetProduct} />
-      </View>
-      {showGetTable &&(
-        <DataTable style={styles.table}>
-        <DataTable.Header style={styles.tableHeader}>
-          <DataTable.Title>
-            <Text style={styles.textCustom}>Product ID</Text> 
-          </DataTable.Title>
-          <DataTable.Title>
-            <Text style={styles.textCustom}>Inventory</Text>
-          </DataTable.Title>  
-          <DataTable.Title>
-            <Text style={styles.textCustom}>Name</Text>
-          </DataTable.Title>
-          <DataTable.Title>
-            <Text style={styles.textCustom}>Price</Text>
-          </DataTable.Title>
-          <DataTable.Title>
-            <Text style={styles.textCustom}>Color</Text>
-          </DataTable.Title>
-        </DataTable.Header>
-        <DataTable.Row>
-          <DataTable.Cell>
-            <Text style={styles.textCustom}>{product.productId}</Text>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <Text style={styles.textCustom}>{product.inventory}</Text> 
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <Text style={styles.textCustom}>{product.productName}</Text>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <Text style={styles.textCustom}>{product.price}</Text>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <Text style={styles.textCustom}>{product.color}</Text>
-          </DataTable.Cell>
-        </DataTable.Row>
-      </DataTable>
-    )}
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
+  buttonHeader: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  navRow: {
+    flexDirection: 'row',
+    backgroundColor: '#181818',
+    paddingTop: 30,
+    paddingBottom: 10,
+    width: '100%',
+    justifyContent: 'space-evenly',
+
+  },
   page: {
     flex: 1,
-    backgroundColor: '#161010',
+    backgroundColor: '#272525',
     alignItems: 'center',
     justifyContent: 'center',
   },
   container: {
-    backgroundColor: '#161010',
-    margin: 15,
+    backgroundColor: '#272525',
+    marginVertical: 15,
+    marginHorizontal: 5,
     alignItems: 'center',
+  },
+  containerRow: {
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   textCustom: {
     color: '#fff',
   },
   table: {
     backgroundColor: '#2e2d2d',
-    margin: 20,
+    minWidth: '90%',
   },
   tableHeader: {
     backgroundColor: '#464646',
@@ -186,6 +220,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#464646',
     color: '#fff',
     textAlign: 'center',
-    width: '29%',
+    minWidth: '35%',
+    minHeight: 40,
+  },
+  titleText: {
+    color: 'white',
+    fontSize: 36,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginRight: 20,
   },
 });

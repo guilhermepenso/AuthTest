@@ -14,6 +14,6 @@ export const scanProducts = async () => {
         console.log('Products:', response.data.products);
         return response.data.products
     } catch (error) {
-        console.error('Error fetching products:', error);
+        alert('Não foi possível se conectar com o servidor:', error);
     }
 };
