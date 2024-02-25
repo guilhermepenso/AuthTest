@@ -14,7 +14,6 @@ export const scanProducts = async () => {
         });
         */
         const response = await axios.get(`${apiEndpoint}/products`);
-        console.log('Products:', response.data.products);
         return response.data.products
     } catch (error) {
         alert('Não foi possível se conectar com o servidor:', error);

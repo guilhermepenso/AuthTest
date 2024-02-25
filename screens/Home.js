@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button, StyleSheet, Text, View, TextInput, ScrollView, SafeAreaView } from 'react-native';
 import { DataTable } from 'react-native-paper';
-import { scanProducts } from '../../api/scan'; // Import the ScanProducts function
+import { scanProducts } from '../api/scan'; // Import the ScanProducts function
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export const Home = () => {
   const navigation = useNavigation();
@@ -13,21 +15,21 @@ export const Home = () => {
   const [showScanTable, setShowScanTable] = useState(false);
   
   useEffect(() => {
-    loadSecureStore();
+    loadLocalData();
   }, []);
   
-  const loadSecureStore = async () => {
+  const loadLocalData = async () => {
     try {
-      const storedData = await SecureStore.getItemAsync('products');
+      const storedData = await AsyncStorage.getItem('products');
       if (storedData) {
-        console.log('Sucesso, os dados salvos no anteriormente no SecureStore foram carregados');
+        console.log('Sucesso, os dados salvos no anteriormente no Local Data foram carregados');
         setProducts(JSON.parse(storedData));
       } else {
         console.log('Erro, buscando dados pela API');
         await handleScanProducts();
       }
     } catch (error) {
-      alert('Erro ao verificar o SecureStore:', error);
+      alert('Erro ao verificar o Local Data:', error);
     }
   };
 
@@ -40,7 +42,7 @@ export const Home = () => {
       const data = await scanProducts();
       if (data) {
         setProducts(data);
-        await SecureStore.setItemAsync('products', JSON.stringify(data));
+        await AsyncStorage.setItem('products', JSON.stringify(data));
       } 
     } catch (error) {
       alert('Não foi possível se conectar a API:', error);
@@ -53,7 +55,7 @@ export const Home = () => {
 
   const handleGetProduct = async () => {
     try {
-      const storedProducts = await SecureStore.getItemAsync('products');
+      const storedProducts = await AsyncStorage.getItem('products');
       const parsedProducts = JSON.parse(storedProducts);
       const productData = parsedProducts.find((p) => p.productId === productIdInput);
       setProduct(productData);
