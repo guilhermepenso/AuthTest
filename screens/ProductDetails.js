@@ -130,9 +130,52 @@ export const ProductDetails = ({ route }) => {
       }
 
 
-  loadData = async() => {
-
-  };
+      // import React, { useEffect, useState } from 'react';
+      // import AsyncStorage from '@react-native-async-storage/async-storage';
+      // import { BarChart } from 'react-native-gifted-charts';
+      
+      // const MyComponent = () => {
+      //   const [barData, setBarData] = useState([]);
+      
+      //   useEffect(() => {
+      //     const fetchData = async () => {
+      //       const products = JSON.parse(await AsyncStorage.getItem('products'));
+      //       const costs = JSON.parse(await AsyncStorage.getItem('costs'));
+      
+      //       // Assuming products and costs are sorted by the same productID order
+      //       const data = products.map((product, index) => {
+      //         return {
+      //           label: product.productID, // replace with your label
+      //           value: product.price,
+      //           frontColor: '#eeea0f', // yellow color for product price
+      //           spacing: 2,
+      //           labelWidth: 30,
+      //           labelTextStyle: {color: 'gray'},
+      //         },
+      //         {
+      //           value: costs[index].price,
+      //           frontColor: '#ff4500', // orange color for cost price
+      //         };
+      //       });
+      
+      //       setBarData(data);
+      //     };
+      
+      //     fetchData();
+      //   }, []);
+      
+      //   return (
+      //     <BarChart
+      //       data={barData}
+      //       style={{ marginVertical: 8, borderRadius: 8 }}
+      //       spacing={2}
+      //       labelWidth={30}
+      //       labelTextStyle={{color: 'gray'}}
+      //     />
+      //   );
+      // };
+      
+      // export default MyComponent;
 
   return (
     <SafeAreaView style={styles.page}>
