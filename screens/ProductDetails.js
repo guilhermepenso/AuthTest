@@ -1,12 +1,138 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View, ScrollView, SafeAreaView  } from 'react-native';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
+import { BarChart } from 'react-native-gifted-charts';
 
 
 export const ProductDetails = ({ route }) => {
     const navigation = useNavigation();
 
   const { product } = route.params;
+
+    const barData = [
+        {
+          value: 40,
+          label: 'Jan',
+          spacing: 2,
+          labelWidth: 30,
+          labelTextStyle: {color: 'gray'},
+          frontColor: '#eeea0f',
+        },
+        {value: 20, frontColor: '#d6d6ce'},
+        {
+          value: 50,
+          label: 'Feb',
+          spacing: 2,
+          labelWidth: 30,
+          labelTextStyle: {color: 'gray'},
+          frontColor: '#eeea0f',
+        },
+        {value: 40, frontColor: '#d6d6ce'},
+        {
+          value: 75,
+          label: 'Mar',
+          spacing: 2,
+          labelWidth: 30,
+          labelTextStyle: {color: 'gray'},
+          frontColor: '#eeea0f',
+        },
+        {value: 25, frontColor: '#d6d6ce'},
+        {
+          value: 30,
+          label: 'Apr',
+          spacing: 2,
+          labelWidth: 30,
+          labelTextStyle: {color: 'gray'},
+          frontColor: '#eeea0f',
+        },
+        {value: 20, frontColor: '#d6d6ce'},
+        {
+          value: 45,
+          label: 'May',
+          spacing: 2,
+          labelWidth: 30,
+          labelTextStyle: {color: 'gray'},
+          frontColor: '#eeea0f',
+        },
+        {value: 40, frontColor: '#d6d6ce'},
+        {
+          value: 65,
+          label: 'Jun',
+          spacing: 2,
+          labelWidth: 30,
+          labelTextStyle: {color: 'gray'},
+          frontColor: '#eeea0f',
+        },
+        {value: 30, frontColor: '#d6d6ce'},
+      ];
+
+      const renderTitle = () => {
+          return(
+            <View style={{marginVertical: 20}}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 20,
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
+              Consumer Group
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                marginTop: 24,
+                backgroundColor: '#29292932',
+              }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    height: 12,
+                    width: 12,
+                    borderRadius: 6,
+                    backgroundColor: '#eeea0f',
+                    marginRight: 8,
+                  }}
+                />
+                <Text
+                  style={{
+                    width: 70,
+                    height: 20,
+                    color: 'lightgray',
+                  }}>
+                  Consumo
+                </Text>
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    height: 12,
+                    width: 12,
+                    borderRadius: 6,
+                    backgroundColor: '#d6d6ce',
+                    marginRight: 8,
+                  }}
+                />
+                <Text
+                  style={{
+                    width: 80,
+                    height: 20,
+                    color: 'lightgray',
+                  }}>
+                  Telemetria
+                </Text>
+              </View>
+            </View>
+          </View>
+          )
+      }
+
+
+  loadData = async() => {
+
+  };
 
   return (
     <SafeAreaView style={styles.page}>
@@ -26,6 +152,26 @@ export const ProductDetails = ({ route }) => {
             <Text style={styles.text}>Price: {product.price}</Text>
             <Text style={styles.text}>Color: {product.color}</Text>
         </View>
+        <View
+        style={{
+          backgroundColor: '#47474745',
+          paddingBottom: 40,
+          borderRadius: 10,
+          marginTop: 30,
+        }}>
+        {renderTitle()}
+        <BarChart
+          data={barData}
+          barWidth={10}
+          spacing={32}
+          rulesColor={'#474747'}
+          xAxisThickness={0}
+          yAxisThickness={0}
+          yAxisTextStyle={{color: 'gray'}}
+          noOfSections={8}
+          maxValue={80}
+        />
+      </View>
       </ScrollView>
     </SafeAreaView>
   );
