@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button, StyleSheet, Text, View, TextInput, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { DataTable } from 'react-native-paper';
-import { scanProducts } from '../api/scan'; // Import the ScanProducts function
+import { scanProducts } from '../services/api/scan'; // Import the ScanProducts function
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export const Test_Home = () => {
+export const Home = () => {
   const navigation = useNavigation();
 
   // SCAN - PRODUCTS
@@ -20,7 +20,7 @@ export const Test_Home = () => {
   
   const loadLocalData = async () => {
     try {
-      const storedData = await AsyncStorage.getItem('products');
+      const storedData = await scanProducts();
       if (storedData) {
         console.log('Sucesso, os dados salvos no anteriormente no Local Data foram carregados');
         setProducts(JSON.parse(storedData));
@@ -68,9 +68,6 @@ export const Test_Home = () => {
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.navRow}>
-          <View>
-            <Text style={styles.titleText}>TEST HOME</Text>
-          </View>
           <View style={styles.container}>
             <Button title="Sync" onPress={handleScanProducts} />
           </View>
@@ -86,7 +83,7 @@ export const Test_Home = () => {
             />
           </View>
           <View style={styles.container}>
-            <Button title="QUERY" onPress={handleQueryProduct} />
+            <Button title="Search" onPress={handleQueryProduct} />
           </View>
         </View>
         {showGetTable && (
@@ -109,7 +106,7 @@ export const Test_Home = () => {
               </DataTable.Title>
             </DataTable.Header>
             {product.map((product, index) => (
-                <TouchableOpacity key={index} onPress={() => navigation.navigate('ProductDetails', { product: product })}>
+                <TouchableOpacity key={index} onPress={() => navigation.navigate('Details', { product: product })}>
                     <DataTable.Row>
                     <DataTable.Cell>
                         <Text style={styles.textCustom}>{product.productId}</Text>

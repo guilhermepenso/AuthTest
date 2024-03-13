@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { API_ENDPOINT } from '@env';
+//import { API_ENDPOINT } from '@env';
 
-const API_URL = API_ENDPOINT;
+const API_URL = process.env.EXPO_PUBLIC_API_ENDPOINT;
+console.log('API_URL: ', API_URL);
 export const getProduct = async (productId) => {
     try {
         const response = await axios.get(`${API_URL}/product`, {

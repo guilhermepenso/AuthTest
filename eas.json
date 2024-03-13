@@ -1,0 +1,40 @@
+{
+  "cli": {
+    "version": ">= 7.5.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_USER_POOL_ID": "us-east-1_orzvx2nkF",
+        "EXPO_PUBLIC_CLIENT_ID": "1rv9s2rcsgcadj110bfc8oinj3",
+        "EXPO_PUBLIC_API_ENDPOINT": "https://m79efc5c9i.execute-api.us-east-1.amazonaws.com/prod",
+        "EXPO_PUBLIC_ACCESS_TOKEN": "eyJraWQiOiJZbk05YUZLWWplcG1VQmFNVVBxcWoxbWpYdFliVkFoSUY2RGdKTnNIb29nPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkNGY4NzRmOC1mMDgxLTcwMWEtNjM4Ni0yYjFkYjk1YTA5MWMiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6InBob25lIGh0dHBzOlwvXC9tNzllZmM1YzlpLmV4ZWN1dGUtYXBpLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC9wcm9kXC9wcm9kdWN0cy5yZWFkIG9wZW5pZCBlbWFpbCIsImF1dGhfdGltZSI6MTcwODI5MjQ4MCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfNUZuWTNlQkxLIiwiZXhwIjoxNzA4MjkyNzgwLCJpYXQiOjE3MDgyOTI0ODAsInZlcnNpb24iOjIsImp0aSI6IjE0ZmMzNmE0LTM3YWYtNGI5Ny04NTE2LTJkMzg1Y2YxNzExNSIsImNsaWVudF9pZCI6IjdtZ2owZTRmN2ttcjI0N2ZyYzZmOXA0YWs4IiwidXNlcm5hbWUiOiJkNGY4NzRmOC1mMDgxLTcwMWEtNjM4Ni0yYjFkYjk1YTA5MWMifQ.SqXkq4Jz96ZeEi1GPV0nZtjhHHzNG1Ja0sZYCfNMaDYIE7qBSvLEr78GjZ1eP_mLE0QdqWi2ctvDTTtOIPo7lRawj-h1uF2ciKt_SpdjDkilUkysaA2edmqIcYLEYgHskRZsQsxMDvFNKXKQrvK4dK_DU0t22EJTfNHIADvBBGkTiJnUPQNsOlAlwXvdLBdK4UHKN9_QUIe61eDupgUdG44eW93wey5o2rULfftpX8PiL3Wn5UzKlsehnWeaTTeObVWqUap9c1ugVZ-MaedBY_yKNgYWSPlvrvllpwzWioJSxScnLmbjO03JekS6z5CIF6zzH8eLKNgIFo9yLwunUg"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_USER_POOL_ID": "us-east-1_orzvx2nkF",
+        "EXPO_PUBLIC_CLIENT_ID": "1rv9s2rcsgcadj110bfc8oinj3",
+        "EXPO_PUBLIC_API_ENDPOINT": "https://m79efc5c9i.execute-api.us-east-1.amazonaws.com/prod",
+        "EXPO_PUBLIC_ACCESS_TOKEN": "eyJraWQiOiJZbk05YUZLWWplcG1VQmFNVVBxcWoxbWpYdFliVkFoSUY2RGdKTnNIb29nPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkNGY4NzRmOC1mMDgxLTcwMWEtNjM4Ni0yYjFkYjk1YTA5MWMiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6InBob25lIGh0dHBzOlwvXC9tNzllZmM1YzlpLmV4ZWN1dGUtYXBpLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC9wcm9kXC9wcm9kdWN0cy5yZWFkIG9wZW5pZCBlbWFpbCIsImF1dGhfdGltZSI6MTcwODI5MjQ4MCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfNUZuWTNlQkxLIiwiZXhwIjoxNzA4MjkyNzgwLCJpYXQiOjE3MDgyOTI0ODAsInZlcnNpb24iOjIsImp0aSI6IjE0ZmMzNmE0LTM3YWYtNGI5Ny04NTE2LTJkMzg1Y2YxNzExNSIsImNsaWVudF9pZCI6IjdtZ2owZTRmN2ttcjI0N2ZyYzZmOXA0YWs4IiwidXNlcm5hbWUiOiJkNGY4NzRmOC1mMDgxLTcwMWEtNjM4Ni0yYjFkYjk1YTA5MWMifQ.SqXkq4Jz96ZeEi1GPV0nZtjhHHzNG1Ja0sZYCfNMaDYIE7qBSvLEr78GjZ1eP_mLE0QdqWi2ctvDTTtOIPo7lRawj-h1uF2ciKt_SpdjDkilUkysaA2edmqIcYLEYgHskRZsQsxMDvFNKXKQrvK4dK_DU0t22EJTfNHIADvBBGkTiJnUPQNsOlAlwXvdLBdK4UHKN9_QUIe61eDupgUdG44eW93wey5o2rULfftpX8PiL3Wn5UzKlsehnWeaTTeObVWqUap9c1ugVZ-MaedBY_yKNgYWSPlvrvllpwzWioJSxScnLmbjO03JekS6z5CIF6zzH8eLKNgIFo9yLwunUg"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_USER_POOL_ID": "us-east-1_orzvx2nkF",
+        "EXPO_PUBLIC_CLIENT_ID": "1rv9s2rcsgcadj110bfc8oinj3",
+        "EXPO_PUBLIC_API_ENDPOINT": "https://m79efc5c9i.execute-api.us-east-1.amazonaws.com/prod",
+        "EXPO_PUBLIC_ACCESS_TOKEN": "eyJraWQiOiJZbk05YUZLWWplcG1VQmFNVVBxcWoxbWpYdFliVkFoSUY2RGdKTnNIb29nPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkNGY4NzRmOC1mMDgxLTcwMWEtNjM4Ni0yYjFkYjk1YTA5MWMiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6InBob25lIGh0dHBzOlwvXC9tNzllZmM1YzlpLmV4ZWN1dGUtYXBpLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC9wcm9kXC9wcm9kdWN0cy5yZWFkIG9wZW5pZCBlbWFpbCIsImF1dGhfdGltZSI6MTcwODI5MjQ4MCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfNUZuWTNlQkxLIiwiZXhwIjoxNzA4MjkyNzgwLCJpYXQiOjE3MDgyOTI0ODAsInZlcnNpb24iOjIsImp0aSI6IjE0ZmMzNmE0LTM3YWYtNGI5Ny04NTE2LTJkMzg1Y2YxNzExNSIsImNsaWVudF9pZCI6IjdtZ2owZTRmN2ttcjI0N2ZyYzZmOXA0YWs4IiwidXNlcm5hbWUiOiJkNGY4NzRmOC1mMDgxLTcwMWEtNjM4Ni0yYjFkYjk1YTA5MWMifQ.SqXkq4Jz96ZeEi1GPV0nZtjhHHzNG1Ja0sZYCfNMaDYIE7qBSvLEr78GjZ1eP_mLE0QdqWi2ctvDTTtOIPo7lRawj-h1uF2ciKt_SpdjDkilUkysaA2edmqIcYLEYgHskRZsQsxMDvFNKXKQrvK4dK_DU0t22EJTfNHIADvBBGkTiJnUPQNsOlAlwXvdLBdK4UHKN9_QUIe61eDupgUdG44eW93wey5o2rULfftpX8PiL3Wn5UzKlsehnWeaTTeObVWqUap9c1ugVZ-MaedBY_yKNgYWSPlvrvllpwzWioJSxScnLmbjO03JekS6z5CIF6zzH8eLKNgIFo9yLwunUg"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

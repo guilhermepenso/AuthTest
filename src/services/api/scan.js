@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { API_ENDPOINT } from '@env';
+//import { API_ENDPOINT } from '@env';
 
-const apiEndpoint = API_ENDPOINT;
+const apiEndpoint = process.env.EXPO_PUBLIC_API_ENDPOINT;
+console.log('apiEndpoint: ', apiEndpoint);
 // const accessToken = ACCESS_TOKEN;
 
 export const scanProducts = async () => {

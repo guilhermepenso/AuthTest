@@ -12,25 +12,29 @@
     "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-navigation/native": "^6.1.10",
     "@react-navigation/native-stack": "^6.9.18",
+    "amazon-cognito-identity-js": "^6.3.12",
     "axios": "^1.6.7",
     "base-64": "^1.0.0",
     "core-js": "^3.36.0",
-    "expo": "~50.0.6",
+    "expo": "~50.0.11",
+    "expo-constants": "^15.4.5",
     "expo-secure-store": "~12.8.1",
-    "expo-status-bar": "~1.11.1",
     "jwt-decode": "^4.0.0",
     "react": "18.2.0",
     "react-native": "0.73.4",
     "react-native-chart-kit": "^6.12.0",
-    "react-native-dotenv": "^3.4.10",
     "react-native-gifted-charts": "^1.4.7",
     "react-native-paper": "^5.12.3",
-    "react-native-safe-area-context": "^4.9.0",
+    "react-native-safe-area-context": "4.8.2",
+    "react-native-screens": "^3.29.0",
+    "react-native-svg": "14.1.0",
     "react-router-dom": "^6.22.1",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
+    "react-native-dotenv": "^3.4.11"
   },
   "private": true
 }
