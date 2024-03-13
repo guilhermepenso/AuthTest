@@ -1,89 +1,89 @@
 import React, { useState, useEffect } from 'react';
-import { Button, StyleSheet, Text, View, TextInput, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import { scanProducts } from '../services/api/scan'; // Import the ScanProducts function
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 
 export const Home = () => {
   const navigation = useNavigation();
 
   // SCAN - PRODUCTS
-  const [products, setProducts] = useState(null);
+  const [data, setData] = useState(null);
   const [showScanTable, setShowScanTable] = useState(false);
   
   useEffect(() => {
-    loadLocalData();
+    handleScanTable();
   }, []);
-  
-  const loadLocalData = async () => {
-    try {
-      const storedData = await scanProducts();
-      if (storedData) {
-        console.log('Sucesso, os dados salvos no anteriormente no Local Data foram carregados');
-        setProducts(JSON.parse(storedData));
-      } else {
-        console.log('Erro, buscando dados pela API');
-        await handleScanProducts();
-      }
-    } catch (error) {
-      alert('Erro ao verificar o Local Data:', error);
-    }
-  };
 
-  const scanTable = () => {
-    setShowScanTable(true);
-  }
-
-  const handleScanProducts = async () => {
+  const handleScanTable = async () => {
     try {
       const data = await scanProducts();
       if (data) {
-        setProducts(data);
-        await AsyncStorage.setItem('products', JSON.stringify(data));
+        setData(data);
       } 
     } catch (error) {
       alert('Não foi possível se conectar a API:', error);
     }
   };
+
   // GET - PRODUCT
   const [showGetTable, setShowGetTable] = useState(false);
-  const [productIdInput, setProductIdInput] = useState(null); 
-  const [product, setProduct] = useState(null);
+  const [inputId, setInputId] = useState(null); 
+  const [getData, setGetData] = useState(null);
 
-  const handleQueryProduct = async () => {
+  const handleGetTable = async () => {
     try {
-      const storedProducts = await AsyncStorage.getItem('products');
-      const parsedProducts = JSON.parse(storedProducts);
-      const matchedProducts = parsedProducts.filter(product => product.productId.includes(productIdInput));
-      console.log(matchedProducts);
-      setProduct(matchedProducts);
+      const data = await scanProducts();
+      console.log('data: ',data);
+      const filterData = data.filter(getData => getData.productId.includes(inputId));
+      console.log('filteredData: ',filterData);
+      setGetData(filterData);
       setShowGetTable(true);
     } catch (error) {
       alert('Não foi possível obter os dados da tabela:', error);
     }
   };
+
+  const handleLogout = async() => {
+    await SecureStore.deleteItemAsync('access_token');
+    await SecureStore.deleteItemAsync('refresh_token');
+    await SecureStore.deleteItemAsync('id_token');
+    navigation.navigate('Login');
+  }
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.navRow}>
-          <View style={styles.container}>
-            <Button title="Sync" onPress={handleScanProducts} />
+          <View>
+            <TouchableOpacity style={styles.button} onPress={handleScanTable}>
+              <Ionicons name='sync' size={24} color='black' />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity style={styles.button} onPress={handleLogout}>
+              <MaterialIcons name='logout' size={24} color='black' />
+            </TouchableOpacity>
           </View>
       </View>
       <ScrollView>
       <View style={styles.containerRow}>
           <View style={styles.container}>
             <TextInput
-              placeholder="enter Product ID"
-              onChangeText={(text) => setProductIdInput(text)}
-              value={productIdInput}
+              placeholder=" Enter ID"
+              placeholderTextColor="#ffffff88"
+              onChangeText={(text) => setInputId(text)}
+              value={inputId}
               style={styles.input}
             />
           </View>
-          <View style={styles.container}>
-            <Button title="Search" onPress={handleQueryProduct} />
+          <View>
+            <TouchableOpacity style={styles.button} onPress={handleGetTable}>
+              <Ionicons name='search' size={24} color='black' />
+            </TouchableOpacity>
           </View>
         </View>
         {showGetTable && (
@@ -105,7 +105,7 @@ export const Home = () => {
                 <Text style={styles.textCustom}>Color</Text>
               </DataTable.Title>
             </DataTable.Header>
-            {product.map((product, index) => (
+            {getData.map((product, index) => (
                 <TouchableOpacity key={index} onPress={() => navigation.navigate('Details', { product: product })}>
                     <DataTable.Row>
                     <DataTable.Cell>
@@ -133,14 +133,10 @@ export const Home = () => {
   );
 }
 const styles = StyleSheet.create({
-  buttonHeader: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   navRow: {
     flexDirection: 'row',
     backgroundColor: '#181818',
-    paddingTop: 30,
+    paddingTop: 20,
     paddingBottom: 10,
     width: '100%',
     justifyContent: 'space-evenly',
@@ -166,18 +162,22 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   table: {
-    backgroundColor: '#2e2d2d',
-    minWidth: '90%',
+    backgroundColor: '#fec30155',
+    minWidth: '95%',
+    borderRadius: 10,
   },
   tableHeader: {
     backgroundColor: '#464646',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   input: {
     backgroundColor: '#464646',
     color: '#fff',
     textAlign: 'center',
-    minWidth: '35%',
-    minHeight: 40,
+    minWidth: '70%',
+    minHeight: 45,
+    borderRadius: 10,
   },
   titleText: {
     color: 'white',
@@ -185,5 +185,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginRight: 20,
+  },
+  button: {
+    backgroundColor: '#FEC201',
+    width: 70,
+    height: 45,
+    borderRadius: 10,
+    marginTop: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
