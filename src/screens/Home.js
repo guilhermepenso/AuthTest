@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { DataTable } from 'react-native-paper';
-import { scanProducts } from '../services/api/scan'; // Import the ScanProducts function
+import { scanConsumerGroupTest } from '../services/api/scanConsumerGroupTest';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native'
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -22,7 +22,7 @@ export const Home = () => {
 
   const handleScanTable = async () => {
     try {
-      const data = await scanProducts();
+      const data = await scanConsumerGroupTest();
       if (data) {
         setData(data);
       } 
@@ -38,9 +38,8 @@ export const Home = () => {
 
   const handleGetTable = async () => {
     try {
-      const data = await scanProducts();
-      console.log('data: ',data);
-      const filterData = data.filter(getData => getData.productId.includes(inputId));
+      const data = await scanConsumerGroupTest();
+      const filterData = data.filter(getData => String(getData.identification_number).includes(inputId));
       console.log('filteredData: ',filterData);
       setGetData(filterData);
       setShowGetTable(true);
@@ -60,12 +59,12 @@ export const Home = () => {
       <View style={styles.navRow}>
           <View>
             <TouchableOpacity style={styles.button} onPress={handleScanTable}>
-              <Ionicons name='sync' size={24} color='black' />
+              <Ionicons name='sync' size={24} color='#FEC201' />
             </TouchableOpacity>
           </View>
           <View>
             <TouchableOpacity style={styles.button} onPress={handleLogout}>
-              <MaterialIcons name='logout' size={24} color='black' />
+              <MaterialIcons name='logout' size={24} color='#FEC201' />
             </TouchableOpacity>
           </View>
       </View>
@@ -81,8 +80,8 @@ export const Home = () => {
             />
           </View>
           <View>
-            <TouchableOpacity style={styles.button} onPress={handleGetTable}>
-              <Ionicons name='search' size={24} color='black' />
+            <TouchableOpacity style={styles.buttonSearch} onPress={handleGetTable}>
+              <Ionicons name='search' size={24} color='#000000' />
             </TouchableOpacity>
           </View>
         </View>
@@ -90,39 +89,21 @@ export const Home = () => {
           <DataTable style={styles.table}>
             <DataTable.Header style={styles.tableHeader}>
               <DataTable.Title>
-                <Text style={styles.textCustom}>Product ID</Text>
+                <Text style={styles.textCustom}>UC</Text>
               </DataTable.Title>
               <DataTable.Title>
-                <Text style={styles.textCustom}>Inventory</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={styles.textCustom}>Name</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={styles.textCustom}>Price</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={styles.textCustom}>Color</Text>
+                <Text style={styles.textCustom}>Address</Text>
               </DataTable.Title>
             </DataTable.Header>
-            {getData.map((product, index) => (
-                <TouchableOpacity key={index} onPress={() => navigation.navigate('Details', { product: product })}>
+            {getData.map((data, index) => (
+                <TouchableOpacity key={index} onPress={() => navigation.navigate('Details', { data: data })}>
                     <DataTable.Row>
-                    <DataTable.Cell>
-                        <Text style={styles.textCustom}>{product.productId}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                        <Text style={styles.textCustom}>{product.inventory}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                        <Text style={styles.textCustom}>{product.productName}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                        <Text style={styles.textCustom}>{product.price}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                        <Text style={styles.textCustom}>{product.color}</Text>
-                    </DataTable.Cell>
+                      <DataTable.Cell>
+                          <Text style={styles.textCustom}>{data.identification_number}</Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                          <Text style={styles.textCustom}>{data.address}</Text>
+                      </DataTable.Cell>
                     </DataTable.Row>
                 </TouchableOpacity>
                 ))}
@@ -135,9 +116,8 @@ export const Home = () => {
 const styles = StyleSheet.create({
   navRow: {
     flexDirection: 'row',
-    backgroundColor: '#181818',
+    backgroundColor: '#272525',
     paddingTop: 20,
-    paddingBottom: 10,
     width: '100%',
     justifyContent: 'space-evenly',
 
@@ -159,10 +139,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textCustom: {
-    color: '#fff',
+    color: '#ffffff',
   },
   table: {
-    backgroundColor: '#fec30155',
+    backgroundColor: '#36322254',
     minWidth: '95%',
     borderRadius: 10,
   },
@@ -175,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#464646',
     color: '#fff',
     textAlign: 'center',
-    minWidth: '70%',
+    minWidth: '76%',
     minHeight: 45,
     borderRadius: 10,
   },
@@ -187,6 +167,15 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   button: {
+    backgroundColor: '#272525',
+    width: 70,
+    height: 45,
+    borderRadius: 10,
+    marginTop: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonSearch: {
     backgroundColor: '#FEC201',
     width: 70,
     height: 45,

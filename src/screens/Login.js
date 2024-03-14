@@ -41,8 +41,11 @@ export const Login = ({ navigation }) => {
       try {
         const tokens = await authenticateUser(email, password); // pass email and password to authenticateUser
         await SecureStore.setItemAsync('access_token', tokens.accessToken);
+        console.log('Access token: ', tokens.accessToken);
         await SecureStore.setItemAsync('id_token', tokens.idToken);
+        console.log('Id token: ', tokens.idToken);
         await SecureStore.setItemAsync('refresh_token', tokens.refreshToken);
+        console.log('Refresh token: ', tokens.refreshToken);
   
         await getData();
       } catch (error) {
@@ -56,7 +59,7 @@ export const Login = ({ navigation }) => {
     <SafeAreaView style={styles.body}>
       <Image 
         style={styles.logo} 
-        source={require('../../assets/logo.png')}
+        source={require('../../assets/icon.png')}
       />
       <Text 
         style={styles.textTitle}>

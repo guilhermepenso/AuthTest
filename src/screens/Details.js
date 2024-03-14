@@ -1,151 +1,101 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View, ScrollView, SafeAreaView  } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, SafeAreaView, TouchableOpacity  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { scanTelemetryComparisonTest } from '../services/api/scanTelemetryComparisonTest';
 import { BarChart } from 'react-native-gifted-charts';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 export const Details = ({ route }) => {
-    const navigation = useNavigation();
 
-  const { product } = route.params;
+  const navigation = useNavigation();
 
-    const barData = [
-        {
-          value: 40,
-          label: 'Jan',
-          spacing: 2,
-          labelWidth: 30,
-          labelTextStyle: {color: 'gray'},
-          frontColor: '#eeea0f',
-        },
-        {value: 20, frontColor: '#d6d6ce'},
-        {
-          value: 50,
-          label: 'Feb',
-          spacing: 2,
-          labelWidth: 30,
-          labelTextStyle: {color: 'gray'},
-          frontColor: '#eeea0f',
-        },
-        {value: 40, frontColor: '#d6d6ce'},
-        {
-          value: 75,
-          label: 'Mar',
-          spacing: 2,
-          labelWidth: 30,
-          labelTextStyle: {color: 'gray'},
-          frontColor: '#eeea0f',
-        },
-        {value: 25, frontColor: '#d6d6ce'},
-        {
-          value: 30,
-          label: 'Apr',
-          spacing: 2,
-          labelWidth: 30,
-          labelTextStyle: {color: 'gray'},
-          frontColor: '#eeea0f',
-        },
-        {value: 20, frontColor: '#d6d6ce'},
-        {
-          value: 45,
-          label: 'May',
-          spacing: 2,
-          labelWidth: 30,
-          labelTextStyle: {color: 'gray'},
-          frontColor: '#eeea0f',
-        },
-        {value: 40, frontColor: '#d6d6ce'},
-        {
-          value: 65,
-          label: 'Jun',
-          spacing: 2,
-          labelWidth: 30,
-          labelTextStyle: {color: 'gray'},
-          frontColor: '#eeea0f',
-        },
-        {value: 30, frontColor: '#d6d6ce'},
-      ];
+  const { data } = route.params;
 
-      const renderTitle = () => {
-          return(
-            <View style={{marginVertical: 20}}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 20,
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}>
-              Consumer Group
-            </Text>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                marginTop: 24,
-                backgroundColor: '#29292932',
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <View
-                  style={{
-                    height: 12,
-                    width: 12,
-                    borderRadius: 6,
-                    backgroundColor: '#eeea0f',
-                    marginRight: 8,
-                  }}
-                />
-                <Text
-                  style={{
-                    width: 70,
-                    height: 20,
-                    color: 'lightgray',
-                  }}>
-                  Consumo
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <View
-                  style={{
-                    height: 12,
-                    width: 12,
-                    borderRadius: 6,
-                    backgroundColor: '#d6d6ce',
-                    marginRight: 8,
-                  }}
-                />
-                <Text
-                  style={{
-                    width: 80,
-                    height: 20,
-                    color: 'lightgray',
-                  }}>
-                  Telemetria
-                </Text>
-              </View>
-            </View>
-          </View>
-          )
-      }
+  const barData = [
+    {
+      value: 40,
+      label: 'Jan',
+      spacing: 2,
+      labelWidth: 30,
+      labelTextStyle: {color: 'gray'},
+      frontColor: '#eeea0f',
+    },
+    {value: 20, frontColor: '#d6d6ce'}
+  ];
+  const renderTitle = () => {
+    return(
+      <View >
+
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          marginTop: 24,
+          backgroundColor: '#29292932',
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View
+            style={{
+              height: 12,
+              width: 12,
+              borderRadius: 6,
+              backgroundColor: '#eeea0f',
+              marginRight: 8,
+            }}
+          />
+          <Text
+            style={{
+              width: 70,
+              height: 20,
+              color: 'lightgray',
+            }}>
+            Consumo
+          </Text>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View
+            style={{
+              height: 12,
+              width: 12,
+              borderRadius: 6,
+              backgroundColor: '#d6d6ce',
+              marginRight: 8,
+            }}
+          />
+          <Text
+            style={{
+              width: 80,
+              height: 20,
+              color: 'lightgray',
+            }}>
+            Telemetria
+          </Text>
+        </View>
+      </View>
+    </View>
+    )
+  }
 
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.navRow}>
           <View>
-            <Text style={styles.titleText}>PRODUCT DETAILS</Text>
-          </View>
-          <View style={styles.container}>
-          <Button title="Home_Test" onPress={() => navigation.navigate('Home_Test')}/>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+              <Ionicons name="chevron-back" size={48} color="#FEC201" />
+            </TouchableOpacity>
           </View>
       </View>
       <ScrollView>
         <View>
-            <Text style={styles.text}>Product ID: {product.productId}</Text>
-            <Text style={styles.text}>Inventory: {product.inventory}</Text>
-            <Text style={styles.text}>Name: {product.productName}</Text>
-            <Text style={styles.text}>Price: {product.price}</Text>
-            <Text style={styles.text}>Color: {product.color}</Text>
+          <Text style={styles.titleText}>UC: {data.identification_number}</Text>
+        </View>
+        <View>
+            <Text style={styles.text}>Address: {data.address}</Text>
+            <Text style={styles.text}>Carbon Whatever: {data.carbon_whatever}</Text>
+            <Text style={styles.text}>City: {data.city}</Text>
+            <Text style={styles.text}>Concessionaire: {data.concessionaire}</Text>
         </View>
         <View
         style={{
@@ -178,11 +128,11 @@ const styles = StyleSheet.create({
   },
   navRow: {
     flexDirection: 'row',
-    backgroundColor: '#181818',
+    backgroundColor: '#272525',
     paddingTop: 30,
-    paddingBottom: 10,
+    paddingLeft: 10,
     width: '100%',
-    justifyContent: 'space-evenly',
+    justifyContent: 'left',
 
   },
   page: {
