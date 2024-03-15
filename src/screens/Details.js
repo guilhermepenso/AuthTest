@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, TouchableOpacity  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { scanTelemetryComparisonTest } from '../services/api/scanTelemetryComparisonTest';
@@ -8,21 +8,44 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 export const Details = ({ route }) => {
 
+  const [telemetryData, setTelemetryData] = useState();
+  const [barData, setBarData] = useState();
+
   const navigation = useNavigation();
 
   const { data } = route.params;
+  console.log('data: ',data);
 
-  const barData = [
-    {
-      value: 40,
-      label: 'Jan',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#eeea0f',
-    },
-    {value: 20, frontColor: '#d6d6ce'}
-  ];
+  useEffect(() => {
+    loadTelemetryComparisonTest();
+  }, [])
+
+  const loadTelemetryComparisonTest = async () => {
+    const telemetry = await scanTelemetryComparisonTest();
+    setTelemetryData(telemetry);
+    console.log('telemetryData: ',telemetry);
+    
+    const filteredTelemetry = telemetryData.filter(tD => tD.identification_number == data.identification_number);
+    console.log('filteredTelemetry: ',filteredTelemetry);
+  
+    const barData = filteredTelemetry.flatMap((telemetry, index) => [
+      {
+        value: telemetry.bill_consumption,
+        label: telemetry.reference_month,
+        spacing: 2,
+        labelWidth: 30,
+        labelTextStyle: { color: 'gray' },
+        frontColor:'#eeea0f',
+      }, 
+      { value: telemetry.measured_values, frontColor: '#d6d6ce' }
+    ]);
+    
+    setBarData(barData);
+    console.log('barData: ',barData);
+  } 
+  
+
+
   const renderTitle = () => {
     return(
       <View >
@@ -120,7 +143,7 @@ export const Details = ({ route }) => {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 const styles = StyleSheet.create({
   buttonHeader: {
     alignItems: 'center',

@@ -7,7 +7,7 @@ console.log('apiEndpoint: ', apiEndpoint);
 
 export const scanTelemetryComparisonTest = async () => {
     try {
-        const token = await SecureStore.getItemAsync('access_token');
+        const token = await SecureStore.getItemAsync('id_token');
         console.log('token: ', token);
         const response = await axios.get(`${apiEndpoint}`, {
             headers: {
