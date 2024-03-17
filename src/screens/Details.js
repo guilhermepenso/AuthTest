@@ -9,7 +9,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 export const Details = ({ route }) => {
 
   const [telemetryData, setTelemetryData] = useState();
-  const [barData, setBarData] = useState();
+  const [Data, setBarData] = useState();
 
   const navigation = useNavigation();
 

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, ScrollView, SafeAreaView, TouchableO
 import { DataTable } from 'react-native-paper';
 import { scanConsumerGroupTest } from '../services/api/scanConsumerGroupTest';
 import * as SecureStore from 'expo-secure-store';
+import * as SQLite from 'expo-sqlite';
 import { useNavigation } from '@react-navigation/native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -12,41 +13,95 @@ import { MaterialIcons } from '@expo/vector-icons';
 export const Home = () => {
   const navigation = useNavigation();
 
+  const db = SQLite.openDatabase('locaDataBase.db');
+
   // SCAN - PRODUCTS
   const [data, setData] = useState(null);
   const [showScanTable, setShowScanTable] = useState(false);
   
+
+
   useEffect(() => {
     handleScanTable();
   }, []);
-
+  
   const handleScanTable = async () => {
     try {
-      const data = await scanConsumerGroupTest();
-      if (data) {
-        setData(data);
+      console.log('yo');
+      const localData = await scanConsumerGroupTest();
+      console.log('data: ', localData);
+      if (localData) {
+        setData(localData);
+        db.transaction(tx => {
+          tx.executeSql('CREATE TABLE IF NOT EXISTS consumerGroupTestDB (identification_number INTEGER PRIMARY KEY NOT NULL, address TEXT, carbon_whatever TEXT, city TEXT, concessionaire TEXT);');
+          localData.forEach(item => {
+            tx.executeSql('INSERT INTO consumerGroupTestDB (identification_number, address, carbon_whatever, city, concessionaire) values (?, ?, ?, ?, ?)', 
+            [item.identification_number, item.address, item.carbon_whatever, item.city, item.concessionaire],
+            (_, result) => {
+              console.log('Inserido com sucesso:', result.insertId);
+            },
+            (_, error) => {
+              console.log('Erro ao inserir dados:', error);
+            });
+          });
+        }, error => {
+          console.log('Erro na transação:', error);
+        }, () => {
+          console.log('Transação bem-sucedida!');
+        });
+        
+        db.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM consumerGroupTestDB',
+            [],
+            (_, { rows: { _array } }) => {
+              console.log('Dados da tabela:', JSON.stringify(_array));
+            },
+            (_, error) => {
+              console.log('Erro ao buscar dados da tabela:', error);
+            }
+          );
+        });
       } 
     } catch (error) {
       alert('Não foi possível se conectar a API:', error);
     }
   };
+  
+  
 
   // GET - PRODUCT
   const [showGetTable, setShowGetTable] = useState(false);
-  const [inputId, setInputId] = useState(null); 
-  const [getData, setGetData] = useState(null);
+  const [inputId, setInputId] = useState(null);
+  const [getData, setGetData] = useState(null)
 
-  const handleGetTable = async () => {
-    try {
-      const data = await scanConsumerGroupTest();
-      const filterData = data.filter(getData => String(getData.identification_number).includes(inputId));
-      console.log('filteredData: ',filterData);
-      setGetData(filterData);
-      setShowGetTable(true);
-    } catch (error) {
-      alert('Não foi possível obter os dados da tabela:', error);
-    }
-  };
+  const handleGetTable = () => {
+    console.log('teste inputId: ', inputId);
+    // db.transaction(tx => {
+    //   tx.executeSql(
+    //     'SELECT * FROM consumerGroupTestDB WHERE identification_number = ?',
+    //     [inputId],
+    //     (_, { rows: { _array } }) => {
+    //       setGetData(JSON.stringify(_array));
+    //       setShowGetTable(true);
+    //     },
+    //     (_, error) => {
+    //       console.log('Erro SQL:', error);
+    //       alert('Erro:', error);
+    //     }
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM consumerGroupTestDB',
+        [],
+        (_, { rows: { _array } }) => {
+          console.log('Dados da tabela:', JSON.stringify(_array));
+        },
+        (_, error) => {
+          console.log('Erro ao buscar dados da tabela:', error);
+        }
+      );
+    });
+  }
 
   const handleLogout = async() => {
     await SecureStore.deleteItemAsync('access_token');
@@ -71,44 +126,43 @@ export const Home = () => {
       <ScrollView>
       <View style={styles.containerRow}>
           <View style={styles.container}>
-            <TextInput
-              placeholder=" Enter ID"
-              placeholderTextColor="#ffffff88"
-              onChangeText={(text) => setInputId(text)}
-              value={inputId}
-              style={styles.input}
-            />
-          </View>
-          <View>
-            <TouchableOpacity style={styles.buttonSearch} onPress={handleGetTable}>
-              <Ionicons name='search' size={24} color='#000000' />
-            </TouchableOpacity>
+            <View style={styles.searchSection}>
+              <Ionicons style={styles.searchIcon} name='search' size={24} color='#FEC201' />
+              <TextInput
+                style={styles.input}
+                placeholder=" Enter ID"
+                placeholderTextColor="#ffffff88"
+                onChangeText={(text) => setInputId(text)}
+                value={inputId}
+                onSubmitEditing={() => handleGetTable()}
+              />
+            </View>
           </View>
         </View>
-        {showGetTable && (
-          <DataTable style={styles.table}>
-            <DataTable.Header style={styles.tableHeader}>
-              <DataTable.Title>
-                <Text style={styles.textCustom}>UC</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={styles.textCustom}>Address</Text>
-              </DataTable.Title>
-            </DataTable.Header>
-            {getData.map((data, index) => (
-                <TouchableOpacity key={index} onPress={() => navigation.navigate('Details', { data: data })}>
-                    <DataTable.Row>
-                      <DataTable.Cell>
-                          <Text style={styles.textCustom}>{data.identification_number}</Text>
-                      </DataTable.Cell>
-                      <DataTable.Cell>
-                          <Text style={styles.textCustom}>{data.address}</Text>
-                      </DataTable.Cell>
-                    </DataTable.Row>
-                </TouchableOpacity>
-                ))}
-          </DataTable>
-        )}
+            {showGetTable && (
+              <DataTable style={styles.table}>
+                <DataTable.Header style={styles.tableHeader}>
+                  <DataTable.Title>
+                    <Text style={styles.textCustom}>UC</Text>
+                  </DataTable.Title>
+                  <DataTable.Title>
+                    <Text style={styles.textCustom}>Address</Text>
+                  </DataTable.Title>
+                </DataTable.Header>
+                {getData.map((data, index) => (
+                    <TouchableOpacity key={index} onPress={() => navigation.navigate('Details', { data: data })}>
+                        <DataTable.Row>
+                          <DataTable.Cell>
+                              <Text style={styles.textCustom}>{data.identification_number}</Text>
+                          </DataTable.Cell>
+                          <DataTable.Cell>
+                              <Text style={styles.textCustom}>{data.address}</Text>
+                          </DataTable.Cell>
+                        </DataTable.Row>
+                    </TouchableOpacity>
+                    ))}
+              </DataTable>
+            )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -120,7 +174,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     width: '100%',
     justifyContent: 'space-evenly',
-
   },
   page: {
     flex: 1,
@@ -151,12 +204,24 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
+  searchSection: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    backgroundColor: '#464646',
+    borderRadius: 10,
+  },
+  searchIcon: {
+    padding: 10,
+  },
   input: {
     backgroundColor: '#464646',
     color: '#fff',
     textAlign: 'center',
     minWidth: '76%',
     minHeight: 45,
+    paddingRight: 30,
     borderRadius: 10,
   },
   titleText: {

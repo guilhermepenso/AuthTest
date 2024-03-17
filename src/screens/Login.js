@@ -59,7 +59,7 @@ export const Login = ({ navigation }) => {
     <SafeAreaView style={styles.body}>
       <Image 
         style={styles.logo} 
-        source={require('../../assets/icon.png')}
+        source={require('../../assets/iconAuth.png')}
       />
       <Text 
         style={styles.textTitle}>
